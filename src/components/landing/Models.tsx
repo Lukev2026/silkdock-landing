@@ -74,22 +74,61 @@ const allModels: Model[] = [
 const promoSlides = [
     {
         title: { en: "DeepSeek V3 — 50% OFF", zh: "DeepSeek V3 — 限时 5 折" },
-        desc: { en: "High-efficiency reasoning model at half price. Best cost-performance ratio.", zh: "高效推理模型半价特惠，极致性价比之选。" },
+        desc: { en: "High-efficiency reasoning at just $0.14/Mt. Offer ends in 48 hours.", zh: "高效推理模型仅需 $0.14/Mt，超高性价比。活动倒计时 48 小时。" },
         tag: "-50%",
     },
     {
         title: { en: "GPT-5 Now Available", zh: "GPT-5 全新上线" },
-        desc: { en: "OpenAI's most advanced model. 256K context, multimodal reasoning.", zh: "OpenAI 最强模型，256K 上下文，多模态推理。" },
+        desc: { en: "OpenAI's most powerful multimodal model. 256K context limit, priority access.", zh: "OpenAI 最强多模态引擎，256K 超大上下文，企业级优先接入。" },
         tag: "NEW",
     },
     {
-        title: { en: "Sora 2 Video Generation", zh: "Sora 2 视频生成" },
-        desc: { en: "Create stunning videos from text. Now available via API.", zh: "文本生成高质量视频，现已开放 API 接入。" },
+        title: { en: "Sora 2 API Live", zh: "Sora 2 API 现已开放" },
+        desc: { en: "Generate 1080p videos at 60fps from text. Starting at $0.05 per second.", zh: "文本极速生成 1080p 60帧高清视频，单步低至 $0.05。抢先体验。" },
         tag: "NEW",
     },
 ];
 
 // ─── Components ────────────────────────────────────────────────────────
+
+// Cyberpunk Text Scramble Effect
+function ScrambleText({ text }: { text: string }) {
+    const [displayText, setDisplayText] = useState(text);
+
+    useEffect(() => {
+        let iteration = 0;
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?/`~";
+        let animationFrame: number;
+
+        const animate = () => {
+            setDisplayText((prev) =>
+                text
+                    .split("")
+                    .map((char, index) => {
+                        if (index < iteration) {
+                            return text[index];
+                        }
+                        return chars[Math.floor(Math.random() * chars.length)];
+                    })
+                    .join("")
+            );
+
+            if (iteration >= text.length) {
+                cancelAnimationFrame(animationFrame);
+                return;
+            }
+
+            iteration += 1 / 3; // Speed of unscrambling
+            animationFrame = requestAnimationFrame(animate);
+        };
+
+        animate();
+
+        return () => cancelAnimationFrame(animationFrame);
+    }, [text]);
+
+    return <span>{displayText}</span>;
+}
 
 function ProviderIcon({ slug, size = 18 }: { slug: string; size?: number }) {
     const { theme } = useTheme();
@@ -115,10 +154,10 @@ const typeLabelMap: Record<string, { en: string; zh: string }> = {
 };
 
 const badgeColors: Record<string, string> = {
-    HOT: "bg-red-500/10 text-red-400 border-red-500/20",
-    NEW: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-    "-30%": "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-    "-50%": "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+    HOT: "bg-red-500/10 text-red-500 border-red-500/20",
+    NEW: "bg-blue-500/10 text-blue-500 border-blue-500/20",
+    "-30%": "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
+    "-50%": "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
 };
 
 function ModelCard({ model, locale }: { model: Model; locale: string }) {
@@ -191,41 +230,46 @@ function PromoBanner({ locale }: { locale: string }) {
 
     const slide = promoSlides[current];
     const tagColor = slide.tag === "NEW" ? "bg-blue-500" : "bg-emerald-500";
+    const titleText = slide.title[locale as "en" | "zh"];
+    const descText = slide.desc[locale as "en" | "zh"];
 
     return (
-        <div className="promo-banner rounded-lg overflow-hidden mb-8">
-            <div className="relative px-6 py-8 md:px-10 md:py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="promo-banner rounded-lg overflow-hidden mb-8 relative">
+            {/* The animated background is handled via CSS class */}
+            <div className="relative px-6 py-5 md:px-8 md:py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2">
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded text-white ${tagColor}`}>
+                    <h3 className="text-xl md:text-2xl font-bold text-foreground mb-1.5 flex items-center gap-3">
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded text-white ${tagColor} shrink-0`}>
                             {slide.tag}
                         </span>
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-bold text-foreground mb-1">
-                        {slide.title[locale as "en" | "zh"]}
+                        <span className="truncate">
+                            <ScrambleText text={titleText} />
+                        </span>
                     </h3>
-                    <p className="text-sm text-muted-foreground max-w-lg">
-                        {slide.desc[locale as "en" | "zh"]}
+                    <p className="text-sm text-muted-foreground/90 max-w-2xl font-mono text-xs">
+                        {"> "} <ScrambleText text={descText} />
                     </p>
                 </div>
-                <div className="flex items-center gap-3 shrink-0">
+
+                <div className="flex items-center gap-3 shrink-0 self-end md:self-center mr-8 md:mr-0">
                     <Button
                         size="sm"
                         className="btn-gradient h-9 px-5 text-sm font-medium rounded-md"
                     >
                         <span className="relative z-10 flex items-center gap-1.5">
-                            {locale === "zh" ? "立即使用" : "Get Started"}
+                            {locale === "zh" ? "立即接入" : "Get Started"}
                             <ArrowRight className="w-3.5 h-3.5" />
                         </span>
                     </Button>
                 </div>
+
                 {/* Dots */}
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+                <div className="absolute top-1/2 right-4 md:right-6 -translate-y-1/2 flex flex-col md:flex-row items-center gap-1.5">
                     {promoSlides.map((_, i) => (
                         <button
                             key={i}
                             onClick={() => setCurrent(i)}
-                            className={`w-1.5 h-1.5 rounded-full transition-all ${i === current ? "bg-primary w-4" : "bg-muted-foreground/30"}`}
+                            className={`rounded-full transition-all ${i === current ? "bg-primary/80 h-3 flex-1 md:w-3 md:h-1.5 md:flex-none" : "bg-muted-foreground/30 w-1.5 h-1.5"}`}
                         />
                     ))}
                 </div>
@@ -266,17 +310,6 @@ export default function Models() {
             <div className="mx-auto max-w-7xl px-6">
                 {/* Promo Banner */}
                 <PromoBanner locale={locale} />
-
-                {/* Section header */}
-                <div className="text-center mb-6">
-                    <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
-                        <span className="text-foreground">{t("models.title1")}</span>
-                        <span className="gradient-text">{t("models.title2")}</span>
-                    </h2>
-                    <p className="mt-2 text-muted-foreground text-sm max-w-lg mx-auto">
-                        {t("models.subtitle")}
-                    </p>
-                </div>
 
                 {/* Search bar — full width */}
                 <div className="mb-5">

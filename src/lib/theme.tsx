@@ -37,14 +37,48 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
-    const toggleTheme = useCallback(() => {
-        setTheme((prev) => {
-            const next = prev === "dark" ? "light" : "dark";
+    const toggleTheme = useCallback((event?: React.MouseEvent) => {
+        const next = theme === "dark" ? "light" : "dark";
+
+        // Fallback for browsers without View Transitions API
+        if (!document.startViewTransition || !event) {
+            setTheme(next);
             localStorage.setItem("silkdock-theme", next);
             applyThemeClass(next);
-            return next;
+            return;
+        }
+
+        // Calculate click position for sweeping circle origin
+        const x = event.clientX;
+        const y = event.clientY;
+        const endRadius = Math.hypot(
+            Math.max(x, window.innerWidth - x),
+            Math.max(y, window.innerHeight - y)
+        );
+
+        const transition = document.startViewTransition(() => {
+            setTheme(next);
+            localStorage.setItem("silkdock-theme", next);
+            applyThemeClass(next);
         });
-    }, []);
+
+        transition.ready.then(() => {
+            const clipPath = [
+                `circle(0px at ${x}px ${y}px)`,
+                `circle(${endRadius}px at ${x}px ${y}px)`
+            ];
+            document.documentElement.animate(
+                {
+                    clipPath: next === "dark" ? [...clipPath].reverse() : clipPath,
+                },
+                {
+                    duration: 500,
+                    easing: "ease-in-out",
+                    pseudoElement: next === "dark" ? "::view-transition-old(root)" : "::view-transition-new(root)",
+                }
+            );
+        });
+    }, [theme]);
 
     if (!mounted) {
         return null;

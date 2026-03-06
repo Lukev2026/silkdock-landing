@@ -20,18 +20,29 @@ export default function LoginPage() {
     const { t } = useI18n();
 
     return (
-        <>
+        <div className="min-h-screen relative flex flex-col">
             <Navbar />
-            <main className="min-h-screen flex items-center justify-center px-6 pt-20">
+
+            {/* Background elements — heavy blur and gradient */}
+            <div className="absolute inset-0 overflow-hidden z-0">
+                <div className="absolute -inset-[100%] opacity-[0.15] dark:opacity-[0.05]"
+                    style={{ backgroundImage: 'radial-gradient(circle at center, #6366f1 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] mix-blend-screen" />
+                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[120px] mix-blend-screen" />
+                <div className="absolute inset-0 backdrop-blur-3xl bg-background/40" />
+            </div>
+
+            <main className="flex-1 flex items-center justify-center px-6 relative z-10 pt-16">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="w-full max-w-md"
+                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ type: "spring", bounce: 0.3, duration: 0.8 }}
+                    className="w-full max-w-[420px]"
                 >
-                    <div className="glass-card rounded-2xl p-8 sm:p-10 relative overflow-hidden">
-                        {/* Decorative glow */}
-                        <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl" />
-                        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-primary/5 rounded-full blur-3xl" />
+                    <div className="glass-card rounded-2xl p-8 sm:p-10 relative overflow-hidden shadow-2xl shadow-primary/5 border border-white/20 dark:border-white/10 bg-background/60 backdrop-blur-2xl">
+                        {/* Inner decorative glow */}
+                        <div className="absolute -top-32 -right-32 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+                        <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
                         <div className="relative z-10">
                             {/* Logo */}
@@ -91,6 +102,6 @@ export default function LoginPage() {
                     </div>
                 </motion.div>
             </main>
-        </>
+        </div>
     );
 }

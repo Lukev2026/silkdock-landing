@@ -4,9 +4,21 @@ import { motion } from "motion/react";
 import { useI18n } from "@/lib/i18n";
 
 const partners = [
-    "LobeChat", "DeepChat", "LangBot", "RAGFlow", "OpenManus",
-    "NextChat", "ChatBox", "LibreChat", "Open WebUI", "Dify", "Cursor", "Continue",
+    { name: "LobeChat", slug: "lobehub" },
+    { name: "Cursor", slug: "cursor" },
+    { name: "Dify", slug: "dify" },
+    { name: "LangChain", slug: "langchain" },
+    { name: "Vercel", slug: "vercel" },
+    { name: "Next.js", slug: "nextjs" },
+    { name: "FastAPI", slug: "fastapi" },
+    { name: "Supabase", slug: "supabase" },
+    { name: "Hugging Face", slug: "huggingface" },
+    { name: "Midjourney", slug: "midjourney" },
+    { name: "Figma", slug: "figma" },
+    { name: "Docker", slug: "docker" }
 ];
+
+const ICON_CDN = "https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/light";
 
 export default function Partners() {
     const { t } = useI18n();
@@ -35,11 +47,21 @@ export default function Partners() {
                 <div className="flex gap-5 animate-marquee" style={{ "--duration": "40s" } as React.CSSProperties}>
                     {allPartners.map((partner, i) => (
                         <div
-                            key={`${partner}-${i}`}
-                            className="flex-shrink-0 px-7 py-3.5 rounded-lg glass-card !shadow-none"
+                            key={`${partner.name}-${i}`}
+                            className="flex-shrink-0 flex items-center gap-3 px-7 py-3.5 rounded-lg glass-card !shadow-none border border-border/50"
                         >
-                            <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
-                                {partner}
+                            <img
+                                src={`${ICON_CDN}/${partner.slug}.png`}
+                                alt={partner.name}
+                                className="w-5 h-5 rounded drop-shadow-sm"
+                                loading="lazy"
+                                onError={(e) => {
+                                    // Fallback if icon missing
+                                    (e.target as HTMLImageElement).style.display = 'none';
+                                }}
+                            />
+                            <span className="text-sm font-medium text-foreground whitespace-nowrap">
+                                {partner.name}
                             </span>
                         </div>
                     ))}

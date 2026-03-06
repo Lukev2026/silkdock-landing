@@ -77,14 +77,14 @@ export default function Features() {
             title: t("features.global.title"),
             description: t("features.global.desc"),
             accentColor: "#06b6d4",
-            span: "sm:col-span-1 md:col-span-1",
+            span: "md:col-span-2",
         },
         {
             icon: <Layers className="w-5 h-5 text-rose-500" />,
             title: t("features.multimodal.title"),
             description: t("features.multimodal.desc"),
             accentColor: "#f43f5e",
-            span: "sm:col-span-1 md:col-span-2",
+            span: "md:col-span-1",
         },
     ];
 
