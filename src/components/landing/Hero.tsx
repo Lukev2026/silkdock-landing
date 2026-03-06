@@ -133,20 +133,22 @@ export default function Hero() {
                 >
                     <Button
                         size="lg"
-                        className="btn-gradient w-full sm:w-auto px-8 h-12 text-base font-medium group rounded-xl"
+                        className="btn-gradient w-full sm:w-auto sm:min-w-[200px] px-8 h-12 text-base font-medium group rounded-xl"
                     >
                         <span className="relative z-10 flex items-center gap-2">
                             {t("hero.cta.primary")}
                             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </span>
                     </Button>
-                    <Button
-                        variant="outline"
-                        size="lg"
-                        className="w-full sm:w-auto px-8 h-12 text-base font-medium border-border hover:border-primary/30 hover:bg-primary/5 rounded-xl"
-                    >
-                        {t("hero.cta.secondary")}
-                    </Button>
+                    <a href="/models">
+                        <Button
+                            variant="outline"
+                            size="lg"
+                            className="w-full sm:w-auto sm:min-w-[200px] px-8 h-12 text-base font-medium border-border hover:border-primary/30 hover:bg-primary/5 rounded-xl"
+                        >
+                            {t("hero.cta.secondary")}
+                        </Button>
+                    </a>
                 </motion.div>
 
                 {/* Code preview */}

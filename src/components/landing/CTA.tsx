@@ -37,7 +37,7 @@ export default function CTA() {
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-8 w-full sm:w-auto">
                         <Button
                             size="lg"
-                            className="btn-gradient w-full sm:w-auto px-8 h-12 text-base font-medium group rounded-xl"
+                            className="btn-gradient w-full sm:w-auto sm:min-w-[200px] px-8 h-12 text-base font-medium group rounded-xl"
                         >
                             <span className="relative z-10 flex items-center gap-2">
                                 {t("cta.start")}
@@ -45,9 +45,9 @@ export default function CTA() {
                             </span>
                         </Button>
                         <Button
-                            variant="ghost"
+                            variant="outline"
                             size="lg"
-                            className="w-full sm:w-auto text-muted-foreground hover:text-foreground h-12 text-base rounded-xl"
+                            className="w-full sm:w-auto sm:min-w-[200px] text-muted-foreground hover:text-foreground h-12 text-base rounded-xl border-border hover:border-primary/30"
                         >
                             {t("cta.sales")}
                         </Button>

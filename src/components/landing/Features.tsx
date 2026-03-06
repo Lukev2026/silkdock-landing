@@ -20,7 +20,7 @@ function FeatureCard({ icon, title, description, accentColor, index, span = "" }
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ delay: index * 0.08, duration: 0.5 }}
-            className={`group relative rounded-2xl glass-card p-6 md:p-8 ${span}`}
+            className={`group relative rounded-2xl glass-card p-6 md:p-8 overflow-hidden ${span}`}
         >
             {/* Subtle accent line at top */}
             <div
@@ -77,12 +77,14 @@ export default function Features() {
             title: t("features.global.title"),
             description: t("features.global.desc"),
             accentColor: "#06b6d4",
+            span: "sm:col-span-1 md:col-span-1",
         },
         {
             icon: <Layers className="w-5 h-5 text-rose-500" />,
             title: t("features.multimodal.title"),
             description: t("features.multimodal.desc"),
             accentColor: "#f43f5e",
+            span: "sm:col-span-1 md:col-span-2",
         },
     ];
 

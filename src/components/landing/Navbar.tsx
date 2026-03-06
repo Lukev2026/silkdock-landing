@@ -34,7 +34,7 @@ export default function Navbar() {
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "glass-nav" : "bg-transparent"
                 }`}
         >
-            <nav className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+            <nav className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between relative">
                 {/* Text-only Logo */}
                 <a href="/" className="flex items-center gap-0.5 group">
                     <span className="text-xl font-bold tracking-tight text-foreground transition-colors">
@@ -45,8 +45,8 @@ export default function Navbar() {
                     </span>
                 </a>
 
-                {/* Desktop Nav */}
-                <div className="hidden md:flex items-center gap-1">
+                {/* Desktop Nav — absolutely centered */}
+                <div className="hidden md:flex items-center gap-1 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                     {navLinks.map((link) => (
                         <a
                             key={link.key}
