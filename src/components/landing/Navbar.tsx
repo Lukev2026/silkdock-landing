@@ -65,11 +65,10 @@ export default function Navbar() {
                     {/* Language toggle */}
                     <button
                         onClick={() => setLocale(locale === "en" ? "zh" : "en")}
-                        className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-muted-foreground hover:text-foreground rounded-md hover:bg-foreground/[0.04] transition-colors"
+                        className="p-2 text-muted-foreground hover:text-foreground rounded-md hover:bg-foreground/[0.04] transition-colors"
                         aria-label="Toggle language"
                     >
-                        <Globe className="w-3.5 h-3.5" />
-                        <span className="font-medium">{locale === "en" ? "中文" : "EN"}</span>
+                        <Globe className="w-4 h-4" />
                     </button>
 
                     {/* Theme toggle */}

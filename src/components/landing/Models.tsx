@@ -35,7 +35,7 @@ const providerList = [
 ];
 
 const typeFilters = [
-    { key: "featured", label: { en: "⚡ Featured", zh: "⚡ 精选" }, icon: Sparkles },
+    { key: "featured", label: { en: "Featured", zh: "精选" }, icon: Sparkles },
     { key: "all", label: { en: "All Models", zh: "所有模型" }, icon: LayoutGrid },
     { key: "text", label: { en: "Text", zh: "文本" }, icon: Type },
     { key: "image", label: { en: "Image", zh: "图像" }, icon: Image },
