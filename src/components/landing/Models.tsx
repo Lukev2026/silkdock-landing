@@ -236,7 +236,7 @@ function PromoBanner({ locale }: { locale: string }) {
         <div className="promo-banner rounded-lg overflow-hidden mb-8 relative">
             {/* The animated background is handled via CSS class */}
             <div className="relative px-6 py-5 md:px-8 md:py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 w-full">
                     <h3 className="text-xl md:text-3xl font-bold text-foreground mb-2 flex items-center gap-3">
                         <span className="truncate">
                             <ScrambleText text={titleText} />
@@ -245,12 +245,16 @@ function PromoBanner({ locale }: { locale: string }) {
                             {slide.tag}
                         </span>
                     </h3>
-                    <p className="text-base text-muted-foreground/90 max-w-2xl font-mono">
-                        {"> "} <ScrambleText text={descText} />
-                    </p>
+                    {/* Fixed height on mobile to allow 2 lines without jumping */}
+                    <div className="h-[48px] md:h-auto overflow-hidden">
+                        <p className="text-base text-muted-foreground/90 max-w-2xl font-mono line-clamp-2 md:line-clamp-none">
+                            <ScrambleText text={descText} />
+                        </p>
+                    </div>
                 </div>
 
-                <div className="flex items-center gap-3 shrink-0 self-end md:self-center mr-8 md:mr-0">
+                {/* Right aligned on mobile */}
+                <div className="w-full md:w-auto flex justify-end mt-2 md:mt-0 shrink-0">
                     <Button
                         size="sm"
                         className="btn-gradient h-9 px-5 text-sm font-medium rounded-md"
