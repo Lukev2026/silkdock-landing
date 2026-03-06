@@ -70,21 +70,20 @@ const allModels: Model[] = [
     { name: "text-embedding-3-large", provider: "OpenAI", providerIcon: "openai", type: "embedding", context: "8K", inputPrice: 0.13, outputPrice: 0.0 },
 ];
 
-// ─── Promo slides ──────────────────────────────────────────────────────
 const promoSlides = [
     {
         title: { en: "DeepSeek V3 — 50% OFF", zh: "DeepSeek V3 — 限时 5 折" },
-        desc: { en: "High-efficiency reasoning at just $0.14/Mt. Offer ends in 48 hours.", zh: "高效推理模型仅需 $0.14/Mt，超高性价比。活动倒计时 48 小时。" },
+        desc: { en: "High-efficiency reasoning at just $0.14/Mt.", zh: "高效推理模型仅需 $0.14/Mt，超高性价比。" },
         tag: "-50%",
     },
     {
         title: { en: "GPT-5 Now Available", zh: "GPT-5 全新上线" },
-        desc: { en: "OpenAI's most powerful multimodal model. 256K context limit, priority access.", zh: "OpenAI 最强多模态引擎，256K 超大上下文，企业级优先接入。" },
+        desc: { en: "OpenAI's most powerful multimodal model.", zh: "OpenAI 最强多模态引擎，256K 超大上下文。" },
         tag: "NEW",
     },
     {
         title: { en: "Sora 2 API Live", zh: "Sora 2 API 现已开放" },
-        desc: { en: "Generate 1080p videos at 60fps from text. Starting at $0.05 per second.", zh: "文本极速生成 1080p 60帧高清视频，单步低至 $0.05。抢先体验。" },
+        desc: { en: "Generate 1080p videos at 60fps from text.", zh: "文本极速生成 1080p 60帧高清视频，抢先体验。" },
         tag: "NEW",
     },
 ];
@@ -224,7 +223,7 @@ function PromoBanner({ locale }: { locale: string }) {
     }, []);
 
     useEffect(() => {
-        const timer = setInterval(next, 5000);
+        const timer = setInterval(next, 10000);
         return () => clearInterval(timer);
     }, [next]);
 
@@ -238,15 +237,15 @@ function PromoBanner({ locale }: { locale: string }) {
             {/* The animated background is handled via CSS class */}
             <div className="relative px-6 py-5 md:px-8 md:py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="flex-1 min-w-0">
-                    <h3 className="text-xl md:text-2xl font-bold text-foreground mb-1.5 flex items-center gap-3">
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded text-white ${tagColor} shrink-0`}>
-                            {slide.tag}
-                        </span>
+                    <h3 className="text-xl md:text-3xl font-bold text-foreground mb-2 flex items-center gap-3">
                         <span className="truncate">
                             <ScrambleText text={titleText} />
                         </span>
+                        <span className={`text-[12px] font-bold px-2 py-0.5 rounded text-white ${tagColor} shrink-0`}>
+                            {slide.tag}
+                        </span>
                     </h3>
-                    <p className="text-sm text-muted-foreground/90 max-w-2xl font-mono text-xs">
+                    <p className="text-base text-muted-foreground/90 max-w-2xl font-mono">
                         {"> "} <ScrambleText text={descText} />
                     </p>
                 </div>

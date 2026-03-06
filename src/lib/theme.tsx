@@ -57,9 +57,17 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         );
 
         const transition = document.startViewTransition(() => {
-            setTheme(next);
-            localStorage.setItem("silkdock-theme", next);
-            applyThemeClass(next);
+            import("react-dom").then(({ flushSync }) => {
+                flushSync(() => {
+                    setTheme(next);
+                });
+                localStorage.setItem("silkdock-theme", next);
+                applyThemeClass(next);
+            }).catch(() => {
+                setTheme(next);
+                localStorage.setItem("silkdock-theme", next);
+                applyThemeClass(next);
+            });
         });
 
         transition.ready.then(() => {

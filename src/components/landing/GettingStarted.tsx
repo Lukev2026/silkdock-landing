@@ -57,7 +57,7 @@ export default function GettingStarted() {
 
                 <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Centered dashed line connecting icons */}
-                    <div className="hidden md:block absolute top-[24px] left-[16.7%] right-[16.7%] border-t-[1.5px] border-dashed border-border/60 -z-10" />
+                    <div className="hidden md:block absolute top-[24px] left-[16.7%] right-[16.7%] border-t-[2px] border-dashed border-border/80 -z-10" />
 
                     {steps.map((s, i) => (
                         <motion.div
@@ -68,8 +68,8 @@ export default function GettingStarted() {
                             transition={{ delay: i * 0.15, duration: 0.5 }}
                             className="relative text-center flex flex-col items-center"
                         >
-                            {/* ring-background creates a gap in the dashed line */}
-                            <div className={`w-12 h-12 rounded-full border ${s.borderColor} ${s.bgColor} flex items-center justify-center mb-6 relative bg-background ring-[10px] ring-background`}>
+                            {/* Glassmorphism circle to blur the line behind it */}
+                            <div className={`w-12 h-12 rounded-full border border-border/60 ${s.bgColor} flex items-center justify-center mb-6 relative bg-background/50 backdrop-blur-lg`}>
                                 <span className={s.color}>{s.icon}</span>
                             </div>
                             <div className={`text-xs font-mono ${s.color} mb-2`}>Step {s.step}</div>
