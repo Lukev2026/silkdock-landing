@@ -8,10 +8,10 @@ import { useI18n } from "@/lib/i18n";
 import { useTheme } from "@/lib/theme";
 
 const navLinks = [
-    { key: "nav.models", href: "#models" },
-    { key: "nav.features", href: "#features" },
-    { key: "nav.pricing", href: "#pricing" },
-    { key: "nav.docs", href: "https://docs.silkdock.ai", external: true },
+    { key: "nav.models", href: "/models" },
+    { key: "nav.features", href: "/#features" },
+    { key: "nav.pricing", href: "/pricing" },
+    { key: "nav.docs", href: "/docs" },
 ];
 
 export default function Navbar() {
@@ -51,8 +51,6 @@ export default function Navbar() {
                         <a
                             key={link.key}
                             href={link.href}
-                            target={link.external ? "_blank" : undefined}
-                            rel={link.external ? "noopener noreferrer" : undefined}
                             className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-foreground/[0.04]"
                         >
                             {t(link.key)}
@@ -96,9 +94,9 @@ export default function Navbar() {
                     </Button>
                     <Button
                         size="sm"
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground text-sm"
+                        className="btn-gradient text-sm rounded-lg"
                     >
-                        {t("nav.getkey")}
+                        <span className="relative z-10">{t("nav.getkey")}</span>
                     </Button>
                 </div>
 
@@ -147,9 +145,9 @@ export default function Navbar() {
                             </a>
                         ))}
                         <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-border">
-                            <Button variant="ghost" size="sm">{t("nav.signin")}</Button>
-                            <Button size="sm" className="bg-primary text-primary-foreground">
-                                {t("nav.getkey")}
+                            <Button variant="ghost" size="sm" className="w-full h-11">{t("nav.signin")}</Button>
+                            <Button size="sm" className="btn-gradient w-full h-11 rounded-lg">
+                                <span className="relative z-10">{t("nav.getkey")}</span>
                             </Button>
                         </div>
                     </div>

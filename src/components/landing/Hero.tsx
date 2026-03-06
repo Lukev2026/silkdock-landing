@@ -105,7 +105,7 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.6 }}
-                    className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05]"
+                    className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05]"
                 >
                     <span className="text-foreground">{t("hero.title1")}</span>
                     <br />
@@ -117,7 +117,7 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.5 }}
-                    className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+                    className="mt-6 text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-2"
                     dangerouslySetInnerHTML={{
                         __html: t("hero.subtitle")
                             .replace(/\*\*(.*?)\*\*/g, '<strong class="text-foreground">$1</strong>'),
@@ -129,13 +129,13 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 }}
-                    className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10"
+                    className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-10 w-full sm:w-auto px-2 sm:px-0"
                 >
                     <Button
                         size="lg"
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-12 text-base font-medium group"
+                        className="btn-gradient w-full sm:w-auto px-8 h-12 text-base font-medium group rounded-xl"
                     >
-                        <span className="flex items-center gap-2">
+                        <span className="relative z-10 flex items-center gap-2">
                             {t("hero.cta.primary")}
                             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </span>
@@ -143,7 +143,7 @@ export default function Hero() {
                     <Button
                         variant="outline"
                         size="lg"
-                        className="px-8 h-12 text-base font-medium border-border hover:border-primary/30 hover:bg-primary/5"
+                        className="w-full sm:w-auto px-8 h-12 text-base font-medium border-border hover:border-primary/30 hover:bg-primary/5 rounded-xl"
                     >
                         {t("hero.cta.secondary")}
                     </Button>
@@ -154,7 +154,7 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.8, duration: 0.6 }}
-                    className="mt-16 mx-auto max-w-2xl"
+                    className="mt-16 mx-auto max-w-2xl w-full overflow-hidden"
                 >
                     <div className="code-block rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg">
                         <div className="flex items-center gap-1.5 px-4 py-3 border-b border-border/50">
@@ -163,7 +163,7 @@ export default function Hero() {
                             <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
                             <span className="ml-3 text-xs text-neutral-500 font-mono">quickstart.py</span>
                         </div>
-                        <pre className="px-5 py-4 text-sm text-left overflow-x-auto font-mono leading-relaxed">
+                        <pre className="px-4 sm:px-5 py-4 text-xs sm:text-sm text-left overflow-x-auto font-mono leading-relaxed">
                             <code>
                                 <span className="text-purple-400">from</span>{" "}
                                 <span className="text-blue-400">openai</span>{" "}

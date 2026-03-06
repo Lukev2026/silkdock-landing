@@ -203,3 +203,42 @@
   border: 1px solid var(--card-border-color);
   box-shadow: var(--card-shadow-val);
 }
+
+/* Gradient primary button with breathing glow */
+.btn-gradient {
+  background: linear-gradient(135deg, var(--grad-start), var(--grad-mid), var(--grad-end));
+  color: #ffffff;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.15), 0 0 40px rgba(59, 130, 246, 0.08);
+  animation: breathe 3s ease-in-out infinite;
+}
+
+.btn-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.12) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(59, 130, 246, 0.15);
+  animation-play-state: paused;
+}
+
+@keyframes breathe {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.15), 0 0 40px rgba(59, 130, 246, 0.08);
+  }
+
+  50% {
+    box-shadow: 0 0 28px rgba(139, 92, 246, 0.25), 0 0 56px rgba(59, 130, 246, 0.14);
+  }
+}

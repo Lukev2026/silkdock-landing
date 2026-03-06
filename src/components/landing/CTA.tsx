@@ -30,16 +30,16 @@ export default function CTA() {
                         <span className="gradient-text">{t("cta.title2")}</span>
                     </h2>
 
-                    <p className="mt-4 text-lg text-muted-foreground max-w-xl mx-auto">
+                    <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto">
                         {t("cta.subtitle")}
                     </p>
 
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-8 w-full sm:w-auto">
                         <Button
                             size="lg"
-                            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-12 text-base font-medium group"
+                            className="btn-gradient w-full sm:w-auto px-8 h-12 text-base font-medium group rounded-xl"
                         >
-                            <span className="flex items-center gap-2">
+                            <span className="relative z-10 flex items-center gap-2">
                                 {t("cta.start")}
                                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                             </span>
@@ -47,7 +47,7 @@ export default function CTA() {
                         <Button
                             variant="ghost"
                             size="lg"
-                            className="text-muted-foreground hover:text-foreground h-12 text-base"
+                            className="w-full sm:w-auto text-muted-foreground hover:text-foreground h-12 text-base rounded-xl"
                         >
                             {t("cta.sales")}
                         </Button>
