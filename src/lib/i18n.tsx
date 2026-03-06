@@ -257,6 +257,19 @@ const translations: Translations = {
         en: "Standard OpenAI error format. Automatic retries with exponential backoff.",
         zh: "标准 OpenAI 错误格式。自动重试 + 指数退避策略。",
     },
+
+    // Login page
+    "login.title": { en: "Welcome back", zh: "欢迎回来" },
+    "login.subtitle": { en: "Sign in to access your API keys and dashboard.", zh: "登录以访问你的 API Key 和控制台。" },
+    "login.google": { en: "Continue with Google", zh: "使用 Google 账号登录" },
+    "login.or": { en: "or", zh: "或" },
+    "login.email.placeholder": { en: "your@email.com", zh: "your@email.com" },
+    "login.email.cta": { en: "Continue with Email", zh: "使用邮箱登录" },
+    "login.email.soon": { en: "Email login coming soon", zh: "邮箱登录即将上线" },
+    "login.terms": {
+        en: "By signing in, you agree to our Terms of Service and Privacy Policy.",
+        zh: "登录即表示你同意我们的服务条款和隐私政策。",
+    },
 };
 
 interface I18nContextValue {

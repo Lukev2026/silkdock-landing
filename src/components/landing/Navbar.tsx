@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { Menu, X, Sun, Moon, Globe } from "lucide-react";
+import { Menu, X, Sun, Moon, Globe, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
 import { useTheme } from "@/lib/theme";
+import { useSession, signOut } from "next-auth/react";
 
 const navLinks = [
     { key: "nav.models", href: "/models" },
@@ -19,6 +20,7 @@ export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const { t, locale, setLocale } = useI18n();
     const { theme, toggleTheme } = useTheme();
+    const { data: session } = useSession();
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -85,19 +87,47 @@ export default function Navbar() {
 
                     <div className="w-px h-5 bg-border mx-1" />
 
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-muted-foreground hover:text-foreground text-sm"
-                    >
-                        {t("nav.signin")}
-                    </Button>
-                    <Button
-                        size="sm"
-                        className="btn-gradient text-sm rounded-lg"
-                    >
-                        <span className="relative z-10">{t("nav.getkey")}</span>
-                    </Button>
+                    {session?.user ? (
+                        <div className="flex items-center gap-2">
+                            {session.user.image && (
+                                <img
+                                    src={session.user.image}
+                                    alt=""
+                                    className="w-7 h-7 rounded-full ring-1 ring-border"
+                                />
+                            )}
+                            <span className="text-sm text-foreground font-medium max-w-[100px] truncate">
+                                {session.user.name?.split(" ")[0]}
+                            </span>
+                            <button
+                                onClick={() => signOut()}
+                                className="p-1.5 text-muted-foreground hover:text-foreground rounded-md hover:bg-foreground/[0.04] transition-colors"
+                                title="Sign out"
+                            >
+                                <LogOut className="w-3.5 h-3.5" />
+                            </button>
+                        </div>
+                    ) : (
+                        <>
+                            <a href="/login">
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="text-muted-foreground hover:text-foreground text-sm"
+                                >
+                                    {t("nav.signin")}
+                                </Button>
+                            </a>
+                            <a href="/login">
+                                <Button
+                                    size="sm"
+                                    className="btn-gradient text-sm rounded-lg"
+                                >
+                                    <span className="relative z-10">{t("nav.getkey")}</span>
+                                </Button>
+                            </a>
+                        </>
+                    )}
                 </div>
 
                 {/* Mobile toggle */}
@@ -145,10 +175,31 @@ export default function Navbar() {
                             </a>
                         ))}
                         <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-border">
-                            <Button variant="ghost" size="sm" className="w-full h-11">{t("nav.signin")}</Button>
-                            <Button size="sm" className="btn-gradient w-full h-11 rounded-lg">
-                                <span className="relative z-10">{t("nav.getkey")}</span>
-                            </Button>
+                            {session?.user ? (
+                                <div className="flex items-center gap-3 px-2 py-2">
+                                    {session.user.image && (
+                                        <img src={session.user.image} alt="" className="w-8 h-8 rounded-full" />
+                                    )}
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-sm font-medium text-foreground truncate">{session.user.name}</p>
+                                        <p className="text-xs text-muted-foreground truncate">{session.user.email}</p>
+                                    </div>
+                                    <button onClick={() => signOut()} className="p-2 text-muted-foreground hover:text-foreground">
+                                        <LogOut className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            ) : (
+                                <>
+                                    <a href="/login">
+                                        <Button variant="ghost" size="sm" className="w-full h-11">{t("nav.signin")}</Button>
+                                    </a>
+                                    <a href="/login">
+                                        <Button size="sm" className="btn-gradient w-full h-11 rounded-lg">
+                                            <span className="relative z-10">{t("nav.getkey")}</span>
+                                        </Button>
+                                    </a>
+                                </>
+                            )}
                         </div>
                     </div>
                 </motion.div>
