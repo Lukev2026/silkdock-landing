@@ -284,7 +284,7 @@ export default function Hero() {
                             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </span>
                     </Button>
-                    <a href="/models">
+                    <a href="/models" className="w-full sm:w-auto">
                         <Button
                             variant="outline"
                             size="lg"
