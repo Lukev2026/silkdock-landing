@@ -26,7 +26,7 @@ function CopyButton({ text }: { text: string }) {
 
 function CodeBlock({ title, lang, code }: { title: string; lang: string; code: string }) {
     return (
-        <div className="code-block rounded-xl overflow-hidden">
+        <div className="code-block rounded-lg overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
                 <div className="flex items-center gap-2">
                     <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
@@ -148,7 +148,7 @@ export default function DocsPage() {
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.1 + i * 0.1 }}
-                                className="glass-card rounded-xl p-6 flex items-start gap-4"
+                                className="glass-card rounded-lg p-6 flex items-start gap-4"
                             >
                                 <div className={`w-10 h-10 rounded-lg ${step.bgColor} flex items-center justify-center shrink-0`}>
                                     <span className={step.color}>{step.icon}</span>
@@ -209,7 +209,7 @@ export default function DocsPage() {
                                 { title: t("docs.features.f3.title"), desc: t("docs.features.f3.desc") },
                                 { title: t("docs.features.f4.title"), desc: t("docs.features.f4.desc") },
                             ].map((f, i) => (
-                                <div key={i} className="glass-card rounded-xl p-5">
+                                <div key={i} className="glass-card rounded-lg p-5">
                                     <h4 className="font-semibold text-foreground mb-1">{f.title}</h4>
                                     <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
                                 </div>

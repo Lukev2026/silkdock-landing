@@ -228,7 +228,7 @@ export default function Hero() {
     const { t } = useI18n();
 
     return (
-        <section className="relative overflow-hidden pt-28 pb-12 md:pt-32 md:pb-16">
+        <section className="relative overflow-hidden pt-28 pb-8 md:pt-32 md:pb-10">
             <GridBackground />
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,var(--background)_70%)]" />
 
@@ -256,34 +256,8 @@ export default function Hero() {
                             .replace(/\*\*(.*?)\*\*/g, '<strong class="text-foreground">$1</strong>'),
                     }}
                 />
-
-                {/* CTA */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-8 w-full sm:w-auto px-2 sm:px-0"
-                >
-                    <Button
-                        size="lg"
-                        className="btn-gradient w-full sm:w-auto sm:min-w-[180px] px-8 h-11 text-sm font-medium group rounded-xl"
-                    >
-                        <span className="relative z-10 flex items-center gap-2">
-                            {t("hero.cta.primary")}
-                            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                        </span>
-                    </Button>
-                    <a href="#models" className="w-full sm:w-auto">
-                        <Button
-                            variant="outline"
-                            size="lg"
-                            className="w-full sm:w-auto sm:min-w-[180px] px-8 h-11 text-sm font-medium border-border hover:border-primary/30 hover:bg-primary/5 rounded-xl"
-                        >
-                            {t("hero.cta.secondary")}
-                        </Button>
-                    </a>
-                </motion.div>
             </div>
         </section>
     );
 }
+

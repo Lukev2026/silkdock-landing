@@ -46,7 +46,7 @@ function PricingCard({
 
             <Button
                 size="lg"
-                className={`mt-8 w-full h-12 rounded-xl text-base font-medium ${highlighted ? "btn-gradient" : "bg-secondary text-secondary-foreground hover:bg-secondary/80"}`}
+                className={`mt-8 w-full h-12 rounded-lg text-base font-medium ${highlighted ? "btn-gradient" : "bg-secondary text-secondary-foreground hover:bg-secondary/80"}`}
             >
                 <span className="relative z-10 flex items-center gap-2 justify-center">
                     {cta}
@@ -64,7 +64,7 @@ function FAQItem({ q, a, delay }: { q: string; a: string; delay: number }) {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay }}
-            className="glass-card rounded-xl overflow-hidden"
+            className="glass-card rounded-lg overflow-hidden"
         >
             <button
                 onClick={() => setOpen(!open)}

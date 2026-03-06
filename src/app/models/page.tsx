@@ -126,7 +126,7 @@ export default function ModelsPage() {
                                 placeholder={t("models.page.search")}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="w-full h-12 pl-11 pr-4 bg-card border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition-colors"
+                                className="w-full h-12 pl-11 pr-4 bg-card border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition-colors"
                             />
                         </div>
 
@@ -178,7 +178,7 @@ export default function ModelsPage() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: i * 0.03, duration: 0.3 }}
-                                className="group glass-card rounded-xl p-5 cursor-pointer"
+                                className="group glass-card rounded-lg p-5 cursor-pointer"
                             >
                                 <div className="flex items-start justify-between mb-2">
                                     <div className="flex items-center gap-2.5">

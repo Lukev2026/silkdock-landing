@@ -30,7 +30,7 @@ function FeatureCard({ icon, title, description, accentColor, index, span = "" }
 
             <div className="relative z-10">
                 <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
+                    className="w-10 h-10 rounded-lg flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
                     style={{ background: `color-mix(in oklch, ${accentColor} 8%, transparent)` }}
                 >
                     {icon}

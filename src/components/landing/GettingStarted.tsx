@@ -82,7 +82,7 @@ export default function GettingStarted() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.4 }}
-                    className="mt-16 code-block rounded-xl overflow-hidden"
+                    className="mt-16 code-block rounded-lg overflow-hidden"
                 >
                     <div className="flex items-center gap-2 px-4 py-3 border-b border-border/50">
                         <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />

@@ -36,7 +36,7 @@ export default function Partners() {
                     {allPartners.map((partner, i) => (
                         <div
                             key={`${partner}-${i}`}
-                            className="flex-shrink-0 px-7 py-3.5 rounded-xl glass-card !shadow-none"
+                            className="flex-shrink-0 px-7 py-3.5 rounded-lg glass-card !shadow-none"
                         >
                             <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
                                 {partner}

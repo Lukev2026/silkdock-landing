@@ -51,7 +51,7 @@ export default function LoginPage() {
                             {/* Google Sign In Button */}
                             <button
                                 onClick={() => signIn("google", { callbackUrl: "/" })}
-                                className="w-full flex items-center justify-center gap-3 h-12 px-6 rounded-xl bg-white hover:bg-neutral-50 text-neutral-800 font-medium text-base transition-all duration-200 hover:shadow-lg hover:shadow-primary/5 border border-neutral-200 group"
+                                className="w-full flex items-center justify-center gap-3 h-12 px-6 rounded-lg bg-white hover:bg-neutral-50 text-neutral-800 font-medium text-base transition-all duration-200 hover:shadow-lg hover:shadow-primary/5 border border-neutral-200 group"
                             >
                                 <GoogleIcon />
                                 <span>{t("login.google")}</span>
@@ -70,11 +70,11 @@ export default function LoginPage() {
                                     type="email"
                                     placeholder={t("login.email.placeholder")}
                                     disabled
-                                    className="w-full h-12 px-4 rounded-xl bg-muted/50 border border-border text-foreground placeholder:text-muted-foreground text-sm focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="w-full h-12 px-4 rounded-lg bg-muted/50 border border-border text-foreground placeholder:text-muted-foreground text-sm focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                                 />
                                 <button
                                     disabled
-                                    className="w-full h-12 rounded-xl bg-muted/30 text-muted-foreground text-sm font-medium cursor-not-allowed"
+                                    className="w-full h-12 rounded-lg bg-muted/30 text-muted-foreground text-sm font-medium cursor-not-allowed"
                                 >
                                     {t("login.email.cta")}
                                 </button>
