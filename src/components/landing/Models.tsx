@@ -118,7 +118,7 @@ function ScrambleText({ text }: { text: string }) {
                 return;
             }
 
-            iteration += 1 / 3; // Speed of unscrambling
+            iteration += Math.max(1, text.length / 30); // Finish in ~0.5s
             animationFrame = requestAnimationFrame(animate);
         };
 
@@ -261,17 +261,6 @@ function PromoBanner({ locale }: { locale: string }) {
                             <ArrowRight className="w-3.5 h-3.5" />
                         </span>
                     </Button>
-                </div>
-
-                {/* Dots */}
-                <div className="absolute top-1/2 right-4 md:right-6 -translate-y-1/2 flex flex-col md:flex-row items-center gap-1.5">
-                    {promoSlides.map((_, i) => (
-                        <button
-                            key={i}
-                            onClick={() => setCurrent(i)}
-                            className={`rounded-full transition-all ${i === current ? "bg-primary/80 h-3 flex-1 md:w-3 md:h-1.5 md:flex-none" : "bg-muted-foreground/30 w-1.5 h-1.5"}`}
-                        />
-                    ))}
                 </div>
             </div>
         </div>

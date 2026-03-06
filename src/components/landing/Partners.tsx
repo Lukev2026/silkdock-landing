@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { useI18n } from "@/lib/i18n";
+import { useTheme } from "@/lib/theme";
 
 const partners = [
     { name: "LobeChat", slug: "lobehub" },
@@ -22,6 +23,7 @@ const ICON_CDN = "https://registry.npmmirror.com/@lobehub/icons-static-png/lates
 
 export default function Partners() {
     const { t } = useI18n();
+    const { theme } = useTheme();
     const allPartners = [...partners, ...partners];
 
     return (
@@ -51,13 +53,16 @@ export default function Partners() {
                             className="flex-shrink-0 flex items-center gap-3 px-7 py-3.5 rounded-lg glass-card !shadow-none border border-border/50"
                         >
                             <img
-                                src={`${ICON_CDN}/${partner.slug}.png`}
+                                src={`https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/${theme === 'dark' ? 'dark' : 'light'}/${partner.slug}.png`}
                                 alt={partner.name}
                                 className="w-5 h-5 rounded drop-shadow-sm"
                                 loading="lazy"
                                 onError={(e) => {
-                                    // Fallback if icon missing
-                                    (e.target as HTMLImageElement).style.display = 'none';
+                                    // Hide the entire parent pill if icon is missing
+                                    const parent = (e.target as HTMLImageElement).parentElement;
+                                    if (parent) {
+                                        parent.style.display = 'none';
+                                    }
                                 }}
                             />
                             <span className="text-sm font-medium text-foreground whitespace-nowrap">

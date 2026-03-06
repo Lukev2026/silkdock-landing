@@ -68,7 +68,8 @@ export default function GettingStarted() {
                             transition={{ delay: i * 0.15, duration: 0.5 }}
                             className="relative text-center flex flex-col items-center"
                         >
-                            <div className={`w-12 h-12 rounded-full border ${s.borderColor} ${s.bgColor} flex items-center justify-center mb-6 relative bg-background`}>
+                            {/* ring-background creates a gap in the dashed line */}
+                            <div className={`w-12 h-12 rounded-full border ${s.borderColor} ${s.bgColor} flex items-center justify-center mb-6 relative bg-background ring-[10px] ring-background`}>
                                 <span className={s.color}>{s.icon}</span>
                             </div>
                             <div className={`text-xs font-mono ${s.color} mb-2`}>Step {s.step}</div>

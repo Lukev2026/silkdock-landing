@@ -19,68 +19,33 @@ function GridBackground() {
         let w = 0, h = 0;
         const dpr = window.devicePixelRatio || 1;
 
-        // Grid configuration
-        const SPACING = 60;
-        const GRID_OFFSET = { x: 0, y: 0 };
-
-        interface DataPacket {
-            x: number;
-            y: number;
-            vx: number;
-            vy: number;
-            length: number;
-            speed: number;
-            color: string;
-            alpha: number;
-            axis: 'x' | 'y'; // Moves along grid horizontal or vertical
+        // Particle system
+        interface Particle {
+            x: number; y: number;
+            vx: number; vy: number;
+            baseVx: number; baseVy: number;
+            size: number; alpha: number;
+            hue: number; life: number; maxLife: number;
         }
 
-        const packets: DataPacket[] = [];
-        const MAX_PACKETS = 45;
+        const particles: Particle[] = [];
+        const PARTICLE_COUNT = 55;
+        const CONNECTION_DIST = 120;
 
-        // Glowing intersection nodes
-        interface Node {
-            x: number;
-            y: number;
-            radius: number;
-            pulsePhase: number;
-            pulseSpeed: number;
-            baseAlpha: number;
-        }
-        const nodes: Node[] = [];
-
-        const colors = {
-            dark: ["#6366f1", "#8b5cf6", "#ec4899", "#14b8a6", "#3b82f6"],
-            light: ["#4f46e5", "#7c3aed", "#db2777", "#0d9488", "#2563eb"],
-        };
-
-        const createPacket = (isDark: boolean): DataPacket => {
-            const axis = Math.random() > 0.5 ? 'x' : 'y';
-            const speed = (2 + Math.random() * 4) * (Math.random() > 0.5 ? 1 : -1);
-            const palette = isDark ? colors.dark : colors.light;
-            const color = palette[Math.floor(Math.random() * palette.length)];
-
-            // Snap to grid
-            let x, y, vx, vy;
-            if (axis === 'x') {
-                y = Math.floor(Math.random() * (h / SPACING)) * SPACING;
-                x = speed > 0 ? -100 : w + 100;
-                vx = speed;
-                vy = 0;
-            } else {
-                x = Math.floor(Math.random() * (w / SPACING)) * SPACING;
-                y = speed > 0 ? -100 : h + 100;
-                vx = 0;
-                vy = speed;
-            }
-
+        const createParticle = (x?: number, y?: number): Particle => {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 0.15 + Math.random() * 0.35;
+            const vx = Math.cos(angle) * speed;
+            const vy = Math.sin(angle) * speed;
             return {
-                x, y, vx, vy,
-                length: 20 + Math.random() * 80,
-                speed: Math.abs(speed),
-                color,
-                alpha: 0.1 + Math.random() * 0.8,
-                axis
+                x: x ?? Math.random() * w,
+                y: y ?? Math.random() * h,
+                vx, vy, baseVx: vx, baseVy: vy,
+                size: 1 + Math.random() * 2,
+                alpha: 0.2 + Math.random() * 0.5,
+                hue: [260, 275, 230, 200, 290][Math.floor(Math.random() * 5)],
+                life: 0,
+                maxLife: 400 + Math.random() * 600,
             };
         };
 
@@ -90,146 +55,165 @@ function GridBackground() {
             canvas.width = w * dpr;
             canvas.height = h * dpr;
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        };
 
-            // Recalculate fixed nodes on grid intersections randomly
-            nodes.length = 0;
-            const cols = Math.floor(w / SPACING);
-            const rows = Math.floor(h / SPACING);
-            for (let i = 0; i < 30; i++) {
-                nodes.push({
-                    x: Math.floor(Math.random() * cols) * SPACING,
-                    y: Math.floor(Math.random() * rows) * SPACING,
-                    radius: 1.5 + Math.random() * 2,
-                    pulsePhase: Math.random() * Math.PI * 2,
-                    pulseSpeed: 0.02 + Math.random() * 0.04,
-                    baseAlpha: 0.2 + Math.random() * 0.4
-                });
+        const initParticles = () => {
+            particles.length = 0;
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                particles.push(createParticle());
             }
         };
 
+        // Convergence attractors — slowly orbiting focal points
+        const attractors = [
+            { cx: 0.35, cy: 0.4, phase: 0, strength: 0 },
+            { cx: 0.65, cy: 0.35, phase: 2.1, strength: 0 },
+            { cx: 0.5, cy: 0.65, phase: 4.2, strength: 0 },
+        ];
+
+        let frame = 0;
+
         const draw = () => {
+            frame++;
             const isDark = document.documentElement.classList.contains("dark");
             ctx.clearRect(0, 0, w, h);
 
-            // 1. Draw geometric background grid
-            ctx.strokeStyle = isDark ? "rgba(255, 255, 255, 0.03)" : "rgba(0, 0, 0, 0.025)";
-            ctx.lineWidth = 1;
-
-            // Pan grid slightly over time
-            GRID_OFFSET.y = (GRID_OFFSET.y + 0.1) % SPACING;
-
-            ctx.beginPath();
-            for (let x = 0; x <= w; x += SPACING) {
-                ctx.moveTo(x, 0); ctx.lineTo(x, h);
+            // Ultra-subtle grid
+            const spacing = 70;
+            const gridAlpha = isDark ? 0.018 : 0.025;
+            ctx.strokeStyle = `rgba(${isDark ? "255,255,255" : "0,0,0"}, ${gridAlpha})`;
+            ctx.lineWidth = 0.5;
+            for (let x = 0; x <= w; x += spacing) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
             }
-            for (let y = GRID_OFFSET.y; y <= h; y += SPACING) {
-                ctx.moveTo(0, y); ctx.lineTo(w, y);
+            for (let y = 0; y <= h; y += spacing) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
             }
-            ctx.stroke();
 
-            // 2. Draw animated intersection nodes
-            nodes.forEach(node => {
-                node.pulsePhase += node.pulseSpeed;
-                const alpha = node.baseAlpha + Math.sin(node.pulsePhase) * 0.2 * (isDark ? 1 : 0.6);
-
-                ctx.beginPath();
-                ctx.arc(node.x, node.y + GRID_OFFSET.y, node.radius, 0, Math.PI * 2);
-                ctx.fillStyle = isDark ? `rgba(99, 102, 241, ${alpha})` : `rgba(79, 70, 229, ${alpha})`;
-                ctx.fill();
-
-                // Extra glow for bright nodes
-                if (alpha > node.baseAlpha + 0.1) {
-                    ctx.shadowColor = isDark ? "rgba(99, 102, 241, 0.8)" : "rgba(79, 70, 229, 0.5)";
-                    ctx.shadowBlur = 10;
-                    ctx.fill();
-                    ctx.shadowBlur = 0;
-                }
+            // Ambient glow nebula
+            const nebulaAlpha = isDark ? 0.05 : 0.025;
+            const nebulae = [
+                { x: w * 0.3, y: h * 0.35, r: 250, hue: 265 },
+                { x: w * 0.7, y: h * 0.3, r: 220, hue: 240 },
+                { x: w * 0.5, y: h * 0.7, r: 200, hue: 280 },
+            ];
+            nebulae.forEach((n, i) => {
+                const ox = Math.sin(frame * 0.003 + i * 2) * 30;
+                const oy = Math.cos(frame * 0.002 + i * 1.7) * 25;
+                const g = ctx.createRadialGradient(n.x + ox, n.y + oy, 0, n.x + ox, n.y + oy, n.r);
+                g.addColorStop(0, `hsla(${n.hue}, 60%, 55%, ${nebulaAlpha})`);
+                g.addColorStop(1, `hsla(${n.hue}, 60%, 55%, 0)`);
+                ctx.fillStyle = g;
+                ctx.fillRect(0, 0, w, h);
             });
 
-            // 3. Update and draw data packets (streaks)
-            // Maintain packet count
-            while (packets.length < MAX_PACKETS) {
-                packets.push(createPacket(isDark));
-            }
+            // Update attractors — periodic convergence pulses
+            attractors.forEach((a, i) => {
+                const cycle = Math.sin(frame * 0.004 + a.phase);
+                // Pulse strength smoothly: strong convergence for part of the cycle
+                a.strength = Math.max(0, cycle) * 0.012;
+                a.cx = [0.35, 0.65, 0.5][i] + Math.sin(frame * 0.001 + i * 2) * 0.06;
+                a.cy = [0.4, 0.35, 0.65][i] + Math.cos(frame * 0.0008 + i * 1.5) * 0.05;
+            });
 
-            for (let i = packets.length - 1; i >= 0; i--) {
-                const p = packets[i];
+            // Update particles
+            particles.forEach((p) => {
+                p.life++;
+
+                // Apply attractor pull
+                let ax = 0, ay = 0;
+                attractors.forEach((att) => {
+                    const tx = att.cx * w;
+                    const ty = att.cy * h;
+                    const dx = tx - p.x;
+                    const dy = ty - p.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 300 && dist > 5) {
+                        const force = att.strength / (dist * 0.02);
+                        ax += (dx / dist) * force;
+                        ay += (dy / dist) * force;
+                    }
+                });
+
+                p.vx = p.baseVx + ax;
+                p.vy = p.baseVy + ay;
                 p.x += p.vx;
                 p.y += p.vy;
 
-                // Adjust Y for scrolling grid effect if moving horizontally
-                const drawY = p.axis === 'x' ? p.y + GRID_OFFSET.y : p.y;
-                const drawX = p.x;
+                // Wrap edges
+                if (p.x < -20) p.x = w + 20;
+                if (p.x > w + 20) p.x = -20;
+                if (p.y < -20) p.y = h + 20;
+                if (p.y > h + 20) p.y = -20;
 
-                // Draw streak gradient
-                const grad = p.axis === 'x'
-                    ? ctx.createLinearGradient(drawX - (p.vx > 0 ? p.length : 0), drawY, drawX + (p.vx < 0 ? p.length : 0), drawY)
-                    : ctx.createLinearGradient(drawX, drawY - (p.vy > 0 ? p.length : 0), drawX, drawY + (p.vy < 0 ? p.length : 0));
+                // Fade in/out
+                let fadeAlpha = p.alpha;
+                if (p.life < 40) fadeAlpha *= p.life / 40;
+                if (p.life > p.maxLife - 60) fadeAlpha *= (p.maxLife - p.life) / 60;
+                if (fadeAlpha < 0) fadeAlpha = 0;
 
-                // The "head" of the packet is brighter
-                const opacity = isDark ? p.alpha : p.alpha * 0.6;
-                const rColor = p.color; // Using hex color directly
-
-                // We convert hex to rgb manually or cheat by drawing distinct segments
-                ctx.beginPath();
-                if (p.axis === 'x') {
-                    ctx.moveTo(drawX - (p.vx > 0 ? p.length : -p.length), drawY);
-                    ctx.lineTo(drawX, drawY);
-                } else {
-                    ctx.moveTo(drawX, drawY - (p.vy > 0 ? p.length : -p.length));
-                    ctx.lineTo(drawX, drawY);
+                // Respawn
+                if (p.life >= p.maxLife) {
+                    Object.assign(p, createParticle());
+                    return;
                 }
 
-                ctx.strokeStyle = p.color;
-                ctx.globalAlpha = opacity;
-                ctx.lineWidth = 2;
-                ctx.stroke();
+                // Draw particle with glow
+                const baseL = isDark ? 70 : 50;
+                const bAlpha = isDark ? fadeAlpha : fadeAlpha * 0.6;
 
-                // Bright moving head
+                // Outer glow
+                const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 6);
+                glow.addColorStop(0, `hsla(${p.hue}, 65%, ${baseL}%, ${bAlpha * 0.15})`);
+                glow.addColorStop(1, `hsla(${p.hue}, 65%, ${baseL}%, 0)`);
+                ctx.fillStyle = glow;
+                ctx.fillRect(p.x - p.size * 6, p.y - p.size * 6, p.size * 12, p.size * 12);
+
+                // Core
                 ctx.beginPath();
-                ctx.arc(drawX, drawY, 2, 0, Math.PI * 2);
-                ctx.fillStyle = '#ffffff';
-                ctx.globalAlpha = opacity + 0.2;
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = `hsla(${p.hue}, 70%, ${baseL + 10}%, ${bAlpha})`;
                 ctx.fill();
+            });
 
-                // Add heavy glow to head
-                ctx.shadowColor = p.color;
-                ctx.shadowBlur = 15;
-                ctx.fill();
-                ctx.shadowBlur = 0;
-                ctx.globalAlpha = 1; // reset
-
-                // Remove dead packets
-                if (p.x < -200 || p.x > w + 200 || p.y < -200 || p.y > h + 200) {
-                    packets.splice(i, 1);
+            // Connect nearby particles with faint lines
+            const lineAlpha = isDark ? 0.06 : 0.03;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const a = particles[i], b = particles[j];
+                    const dx = a.x - b.x, dy = a.y - b.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < CONNECTION_DIST) {
+                        const opacity = (1 - dist / CONNECTION_DIST) * lineAlpha;
+                        const hue = (a.hue + b.hue) / 2;
+                        ctx.beginPath();
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                        ctx.strokeStyle = `hsla(${hue}, 50%, ${isDark ? 65 : 45}%, ${opacity})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
                 }
             }
 
-            // 4. Draw large blurry ambient geometric glows
-            const t = Date.now() * 0.0005;
-            const drawGlow = (gx: number, gy: number, rad: number, colorStr: string) => {
-                const grad = ctx.createRadialGradient(gx, gy, 0, gx, gy, rad);
-                grad.addColorStop(0, colorStr);
-                grad.addColorStop(1, "transparent");
-                ctx.fillStyle = grad;
-                ctx.fillRect(0, 0, w, h);
-            };
-
-            if (isDark) {
-                drawGlow(w * 0.2 + Math.sin(t) * 100, h * 0.3 + Math.cos(t * 0.8) * 100, 400, "rgba(99, 102, 241, 0.08)");
-                drawGlow(w * 0.8 + Math.cos(t * 1.2) * 100, h * 0.6 + Math.sin(t * 0.9) * 100, 500, "rgba(139, 92, 246, 0.06)");
-            } else {
-                drawGlow(w * 0.2 + Math.sin(t) * 100, h * 0.3 + Math.cos(t * 0.8) * 100, 400, "rgba(99, 102, 241, 0.04)");
-                drawGlow(w * 0.8 + Math.cos(t * 1.2) * 100, h * 0.6 + Math.sin(t * 0.9) * 100, 500, "rgba(59, 130, 246, 0.03)");
+            // Occasional bright streak — rare, fast particle trail
+            if (frame % 300 === 0) {
+                const streakY = Math.random() * h;
+                const g = ctx.createLinearGradient(0, streakY, w * 0.6, streakY);
+                g.addColorStop(0, `hsla(270, 60%, 65%, 0)`);
+                g.addColorStop(0.3, `hsla(270, 60%, 65%, ${isDark ? 0.06 : 0.03})`);
+                g.addColorStop(1, `hsla(270, 60%, 65%, 0)`);
+                ctx.fillStyle = g;
+                ctx.fillRect(0, streakY - 1, w, 2);
             }
 
             animationId = requestAnimationFrame(draw);
         };
 
         resize();
-        window.addEventListener("resize", resize);
-        // Start animation after a tiny delay to ensure proper layout
-        setTimeout(() => draw(), 50);
+        initParticles();
+        window.addEventListener("resize", () => { resize(); initParticles(); });
+        draw();
 
         return () => {
             window.removeEventListener("resize", resize);
@@ -237,7 +221,7 @@ function GridBackground() {
         };
     }, []);
 
-    return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />;
+    return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />;
 }
 
 export default function Hero() {
