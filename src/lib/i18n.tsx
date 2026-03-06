@@ -7,6 +7,13 @@ export type Locale = "en" | "zh";
 type Translations = Record<string, Record<Locale, string>>;
 
 const translations: Translations = {
+    // Dashboard
+    "dash.nav.overview": { en: "Overview", zh: "总览" },
+    "dash.nav.keys": { en: "API Keys", zh: "API 密钥" },
+    "dash.nav.usage": { en: "Usage", zh: "使用量" },
+    "dash.nav.logs": { en: "Logs", zh: "日志" },
+    "dash.nav.settings": { en: "Settings", zh: "设置" },
+
     // Navbar
     "nav.models": { en: "Models", zh: "模型" },
     "nav.features": { en: "Features", zh: "特性" },
